@@ -8,7 +8,7 @@ PDF_LUA_DIR      := $(PDF_DIR)/lua
 MD_DIR           := src
 LAGDA_TEX_DIR    := $(TMP_DIR)/lagda_tex
 TEX_DIR          := $(TMP_DIR)/tex
-FRANKENFONT      := $(PDF_DIR)/DejaVu-mononoki-Symbola-Droid.ttf
+FRANKENFONT      := $(PDF_DIR)/Frankenfont.ttf
 
 
 #################################################################################
