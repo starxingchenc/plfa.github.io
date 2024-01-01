@@ -1,12 +1,9 @@
 ---
 title     : "Bisimulation: Relating reduction systems"
-layout    : page
-prev      : /More/
 permalink : /Bisimulation/
-next      : /Inference/
 ---
 
-```
+```agda
 module plfa.part2.Bisimulation where
 ```
 
@@ -59,10 +56,15 @@ in the target:
 
 This stronger condition is known as _lock-step_ or _on the nose_ simulation.
 
-We are particularly interested in the situation where there is also
-a simulation from the target to the source: every reduction in the
-target has a corresponding reduction sequence in the source.  This
-situation is called a _bisimulation_.
+We are particularly interested in the situation where there is also a
+simulation from the target to the source: every reduction in the
+target has a corresponding reduction sequence in the source. In other
+words, `~` is a simulation from source to target, and the converse of
+`~` is a simulation from target to source: this situation is called a
+_bisimulation_.  (In general, if < and > are arbitrary relations such
+that `x < y` if and only if `y > x` then we say that `<` and `>` are
+_converse_ relations. Hence, if `~` is a relation from source to target,
+its converse is a relation from target to source.)
 
 Simulation is established by case analysis over all possible
 reductions and all possible terms to which they are related.  For each
@@ -127,7 +129,7 @@ are in bisimulation.
 
 We import our source language from
 Chapter [More](/More/):
-```
+```agda
 open import plfa.part2.More
 ```
 
@@ -136,7 +138,7 @@ open import plfa.part2.More
 
 The simulation is a straightforward formalisation of the rules
 in the introduction:
-```
+```agda
 infix  4 _~_
 infix  5 ~ƛ_
 infix  7 _~·_
@@ -179,7 +181,7 @@ so `_†` should be defined only on relevant terms. One way to do this is
 to use a decidable predicate to pick out terms in the domain of `_†`, using
 [proof by reflection](/Decidable/#proof-by-reflection).
 
-```
+```agda
 -- Your code goes here
 ```
 
@@ -189,7 +191,7 @@ to use a decidable predicate to pick out terms in the domain of `_†`, using
 We need a number of technical results. The first is that simulation
 commutes with values.  That is, if `M ~ M†` and `M` is a value then
 `M†` is also a value:
-```
+```agda
 ~val : ∀ {Γ A} {M M† : Γ ⊢ A}
   → M ~ M†
   → Value M
@@ -208,7 +210,7 @@ of interest is a lambda abstraction.
 Show that this also holds in the reverse direction: if `M ~ M†`
 and `Value M†` then `Value M`.
 
-```
+```agda
 -- Your code goes here
 ```
 
@@ -219,7 +221,7 @@ The next technical result is that simulation commutes with renaming.
 That is, if `ρ` maps any judgment `Γ ∋ A` to a judgment `Δ ∋ A`,
 and if `M ~ M†` then `rename ρ M ~ rename ρ M†`:
 
-```
+```agda
 ~rename : ∀ {Γ Δ}
   → (ρ : ∀ {A} → Γ ∋ A → Δ ∋ A)
     ----------------------------------------------------------
@@ -244,7 +246,7 @@ The proof first requires we establish an analogue of extension.
 If `σ` and `σ†` both map any judgment `Γ ∋ A` to a judgment `Δ ⊢ A`,
 such that for every `x` in `Γ ∋ A` we have `σ x ~ σ† x`,
 then for any `x` in `Γ , B ∋ A` we have `exts σ x ~ exts σ† x`:
-```
+```agda
 ~exts : ∀ {Γ Δ}
   → {σ  : ∀ {A} → Γ ∋ A → Δ ⊢ A}
   → {σ† : ∀ {A} → Γ ∋ A → Δ ⊢ A}
@@ -262,7 +264,7 @@ With extension under our belts, it is straightforward to show
 substitution commutes.  If `σ` and `σ†` both map any judgment `Γ ∋ A`
 to a judgment `Δ ⊢ A`, such that for every `x` in `Γ ∋ A` we have `σ
 x ~ σ† x`, and if `M ~ M†`, then `subst σ M ~ subst σ† M†`:
-```
+```agda
 ~subst : ∀ {Γ Δ}
   → {σ  : ∀ {A} → Γ ∋ A → Δ ⊢ A}
   → {σ† : ∀ {A} → Γ ∋ A → Δ ⊢ A}
@@ -282,7 +284,7 @@ the body of an abstraction).
 From the general case of substitution, it is also easy to derive
 the required special case.  If `N ~ N†` and `M ~ M†`, then
 `N [ M ] ~ N† [ M† ]`:
-```
+```agda
 ~sub : ∀ {Γ A B} {N N† : Γ , B ⊢ A} {M M† : Γ ⊢ B}
   → N ~ N†
   → M ~ M†
@@ -320,7 +322,7 @@ Or, in a diagram:
 
 We first formulate a concept corresponding to the lower leg
 of the diagram, that is, its right and bottom edges:
-```
+```agda
 data Leg {Γ A} (M† N : Γ ⊢ A) : Set where
 
   leg : ∀ {N† : Γ ⊢ A}
@@ -335,7 +337,7 @@ relation than `—↠`, replacing it by `—→`.
 We can now state and prove that the relation is a simulation.
 Again, in this case, we can use a stronger relation than
 `—↠`, replacing it by `—→`:
-```
+```agda
 sim : ∀ {Γ A} {M M† N : Γ ⊢ A}
   → M ~ M†
   → M —→ N
@@ -466,7 +468,7 @@ In its structure, it looks a little bit like a proof of progress:
 Show that we also have a simulation in the other direction, and hence that we have
 a bisimulation.
 
-```
+```agda
 -- Your code goes here
 ```
 
@@ -478,7 +480,7 @@ are in bisimulation.  The only constructs you need to include are
 variables, and those connected to functions and products.
 In this case, the simulation is _not_ lock-step.
 
-```
+```agda
 -- Your code goes here
 ```
 
